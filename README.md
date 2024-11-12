@@ -22,6 +22,7 @@ Esse projeto tem como objetivo implementar um sistema para gerenciar os associad
 
 - Docker instalado na máquina.
 - Java 21 instalado na máquina.
+- Verificar se as portas 8080, 5050, 5432 já não estão sendo utilizadas.
 
 ## Como executar
 
