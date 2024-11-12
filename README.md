@@ -12,7 +12,7 @@ Esse projeto tem como objetivo implementar um sistema para gerenciar os associad
 
 ## Tecnologias
 
-- Java 21
+- Java 17
 - PostgreSQL
 - Spring
 - Swagger
@@ -21,7 +21,7 @@ Esse projeto tem como objetivo implementar um sistema para gerenciar os associad
 ## Pré-Requisitos
 
 - Docker instalado na máquina.
-- Java 21 instalado na máquina.
+- Java 17 instalado na máquina.
 - Verificar se as portas 8080, 5050, 5432 já não estão sendo utilizadas.
 
 ## Como executar
