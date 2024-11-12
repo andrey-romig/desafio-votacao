@@ -1,0 +1,334 @@
+{
+	"info": {
+		"_postman_id": "b5de31c6-09cf-4f6d-95c5-e0109d2fe135",
+		"name": "Desafio-Votacao",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39663164"
+	},
+	"item": [
+		{
+			"name": "Pauta",
+			"item": [
+				{
+					"name": "Recuperar todas pautas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pauta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pauta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recupera pauta pelo ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pauta/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pauta",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar pauta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"titulo\": \"string\",\r\n  \"descricao\": \"string\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pauta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pauta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Abrir Sessão de Votação",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pauta/1/abrir",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pauta",
+								"1",
+								"abrir"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recupera sessões",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pauta/sessoes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pauta",
+								"sessoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fechar Sessão de votação",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pauta/1/fechar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pauta",
+								"1",
+								"fechar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resultado Votação",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pauta/8/resultado",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pauta",
+								"8",
+								"resultado"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Votar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"associadoId\": 1,\r\n    \"tipoVoto\": \"SIM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pauta/9/votar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pauta",
+								"9",
+								"votar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Associado",
+			"item": [
+				{
+					"name": "Criar Associado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Novo associado\",\r\n    \"cpf\": \"324434534\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/associado",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"associado"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recuperar todos associados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/associado",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"associado"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recuperar associado pelo ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/associado/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"associado",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar associado",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/associado/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"associado",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recuperar associado pelo CPF",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/associado/cpf/123465897",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"associado",
+								"cpf",
+								"123465897"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
