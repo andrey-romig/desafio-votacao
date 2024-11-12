@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AssociadoResponse {
 
+    private Long id;
     private String associadoNome;
     private String associadoCpf;
 

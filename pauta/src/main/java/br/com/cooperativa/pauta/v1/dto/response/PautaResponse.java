@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PautaResponse {
 
+    private Long pautaId;
     private String pautaTitulo;
     private String pautaDescricao;
 
     public PautaResponse(Pauta pauta) {
+        this.pautaId = pauta.getId();
         this.pautaTitulo = pauta.getTitulo();
         this.pautaDescricao = pauta.getDescricao();
     }

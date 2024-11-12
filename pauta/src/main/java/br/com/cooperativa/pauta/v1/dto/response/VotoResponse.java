@@ -16,7 +16,7 @@ public class VotoResponse {
     private TipoVoto tipoVoto;
 
     public VotoResponse(VotoSessao votoSessao, Associado associado) {
-        this.associado = new AssociadoResponse(associado.getNome(), associado.getCpf());
+        this.associado = new AssociadoResponse(associado.getId(), associado.getNome(), associado.getCpf());
         this.tipoVoto = votoSessao.getVoto();
     }
 

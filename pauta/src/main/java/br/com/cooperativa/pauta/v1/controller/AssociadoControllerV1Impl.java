@@ -34,7 +34,7 @@ public class AssociadoControllerV1Impl implements AssociadoControllerV1 {
         }
 
         List<AssociadoResponse> associadosResponse = associados.stream()
-                .map(associado -> new AssociadoResponse(associado.getNome(), associado.getCpf()))
+                .map(associado -> new AssociadoResponse(associado.getId(), associado.getNome(), associado.getCpf()))
                 .toList();
 
         return ResponseEntity.ok(associadosResponse);
@@ -48,7 +48,7 @@ public class AssociadoControllerV1Impl implements AssociadoControllerV1 {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(new AssociadoResponse(associado.getNome(), associado.getCpf()));
+        return ResponseEntity.ok(new AssociadoResponse(associado.getId(), associado.getNome(), associado.getCpf()));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class AssociadoControllerV1Impl implements AssociadoControllerV1 {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(new AssociadoResponse(associado.getNome(), associado.getCpf()));    }
+        return ResponseEntity.ok(new AssociadoResponse(associado.getId(), associado.getNome(), associado.getCpf()));    }
 
     @Override
     public ResponseEntity<Void> deleteAssociado(Long id) {

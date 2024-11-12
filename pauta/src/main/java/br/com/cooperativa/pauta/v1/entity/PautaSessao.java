@@ -34,7 +34,7 @@ public class PautaSessao {
     @Enumerated(EnumType.STRING)
     private StatusPauta status = StatusPauta.FECHADO;
 
-    @OneToMany(mappedBy = "sessaoVotacao", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pautaSessao", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VotoSessao> votos;
 
 }

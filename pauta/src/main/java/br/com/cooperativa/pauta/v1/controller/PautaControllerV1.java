@@ -9,7 +9,6 @@ import br.com.cooperativa.pauta.v1.dto.response.VotoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ public interface PautaControllerV1 {
 
     @Operation(summary = "Cadastrar uma nova pauta",
             description = "Permite cadastrar uma nova pauta",
-            requestBody = @RequestBody(
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                 content = @Content(
                         schema = @Schema(
                                 implementation = PautaRequest.class
@@ -30,9 +29,19 @@ public interface PautaControllerV1 {
                 )
             )
     )
-    @ApiResponse(responseCode = "201", description = "Pauta criada com sucesso")
-    @ApiResponse(responseCode = "500", description = "Erro ao criar a pauta, um ou mais dados podem estar inválidos")
-    @ApiResponse(responseCode = "400", description = "Erro ao criar a pauta, campos inválidos")
+    @ApiResponse(responseCode = "201", description = "Pauta criada com sucesso",
+        content = @Content(
+                schema = @Schema(
+                        implementation = PautaResponse.class
+                )
+        )
+    )
+    @ApiResponse(responseCode = "500", description = "Erro ao criar a pauta, um ou mais dados podem estar inválidos",
+            content = @Content(schema = @Schema())
+    )
+    @ApiResponse(responseCode = "400", description = "Erro ao criar a pauta, campos inválidos",
+            content = @Content(schema = @Schema())
+    )
     @PostMapping
     ResponseEntity<PautaResponse> cadastrarPauta(@Valid @RequestBody PautaRequest pautaDTO);
 
@@ -41,15 +50,19 @@ public interface PautaControllerV1 {
     )
     @ApiResponse(responseCode = "200", description = "Sessão de votação aberta",
             content = @Content(schema = @Schema(implementation = PautaSessaoResponse.class)))
-    @ApiResponse(responseCode = "404", description = "Pauta não encontrada")
-    @ApiResponse(responseCode = "500", description = "Erro ao abrir a sessão de votação, um ou mais dados podem estar inválidos")
+    @ApiResponse(responseCode = "404", description = "Pauta não encontrada",
+            content = @Content(schema = @Schema())
+    )
+    @ApiResponse(responseCode = "500", description = "Erro ao abrir a sessão de votação, um ou mais dados podem estar inválidos",
+            content = @Content(schema = @Schema())
+    )
     @PostMapping("/{id}/abrir")
     ResponseEntity<PautaSessaoResponse> abrirSessaoVotacao(@PathVariable("id") Long pautaId,
                                                            @RequestParam(value = "duracao", defaultValue = "60") int duracaoSegundos);
 
     @Operation(summary = "Receber votos",
             description = "Recebe o voto de um associado para a pauta informada",
-            requestBody = @RequestBody(
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             schema = @Schema(
                                     implementation = VotoRequest.class
@@ -59,26 +72,45 @@ public interface PautaControllerV1 {
     )
     @ApiResponse(responseCode = "200", description = "Voto registrado com sucesso",
             content = @Content(schema = @Schema(implementation = VotoResponse.class)))
-    @ApiResponse(responseCode = "404", description = "Sessão de votação não encontrada")
-    @ApiResponse(responseCode = "500", description = "Erro ao registrar o voto, voto não registrado.")
+    @ApiResponse(responseCode = "404", description = "Sessão de votação não encontrada",
+            content = @Content(schema = @Schema())
+    )
+    @ApiResponse(responseCode = "500", description = "Erro ao registrar o voto, voto não registrado.",
+            content = @Content(schema = @Schema())
+    )
     @PostMapping("/{id}/votar")
-    ResponseEntity<VotoResponse> votar(@PathVariable("id") Long pautaSessaoid, @RequestBody VotoRequest votoDTO);
+    ResponseEntity<VotoResponse> votar(@PathVariable("id") Long pautaSessaoid, @Valid @RequestBody VotoRequest votoDTO);
 
     @Operation(summary = "Contabilizar votos e mostrar resultado",
             description = "Contabiliza os votos e retorna o resultado da votação da pauta")
     @ApiResponse(responseCode = "200", description = "Resultado da votação",
             content = @Content(schema = @Schema(implementation = PautaSessaoResponse.class))
     )
-    @ApiResponse(responseCode = "404", description = "Sessão de votação não encontrada")
+    @ApiResponse(responseCode = "404", description = "Sessão de votação não encontrada",
+            content = @Content(schema = @Schema())
+    )
     @GetMapping("/{id}/resultado")
     ResponseEntity<PautaSessaoResponse> resultado(@PathVariable("id") Long pautaSessaoid);
+
+    @Operation(summary = "Fecha a sessão de votação",
+            description = "Fecha a sessão de votação")
+    @ApiResponse(responseCode = "200", description = "Sessão de votação fechada com sucesso",
+            content = @Content(schema = @Schema(implementation = PautaSessaoResponse.class))
+    )
+    @ApiResponse(responseCode = "404", description = "Sessão de votação não encontrada",
+            content = @Content(schema = @Schema())
+    )
+    @GetMapping("/{id}/fechar")
+    ResponseEntity<PautaSessaoResponse> fecharSessaoVotacao(@PathVariable("id") Long pautaSessaoid);
 
     @Operation(summary = "Recuperar todas as pautas",
             description = "Recupera todas as pautas")
     @ApiResponse(responseCode = "200", description = "Pautas encontradas com sucesso",
         content = @Content(schema = @Schema(implementation = PautaResponse.class))
     )
-    @ApiResponse(responseCode = "404", description = "Nenhuma pauta cadastrada")
+    @ApiResponse(responseCode = "404", description = "Nenhuma pauta cadastrada",
+        content = @Content(schema = @Schema())
+    )
     @GetMapping
     ResponseEntity<List<PautaResponse>> recuperarTodasPautas();
 
@@ -87,7 +119,9 @@ public interface PautaControllerV1 {
     @ApiResponse(responseCode = "200", description = "Pauta encontrada com sucesso",
         content = @Content(schema = @Schema(implementation = PautaResponse.class))
     )
-    @ApiResponse(responseCode = "404", description = "Pauta não encontrada a partir do ID informado")
+    @ApiResponse(responseCode = "404", description = "Pauta não encontrada a partir do ID informado",
+            content = @Content(schema = @Schema())
+    )
     @GetMapping("/{id}")
     ResponseEntity<PautaResponse> recuperarPautaById(@PathVariable("id") Long id);
 
@@ -96,8 +130,10 @@ public interface PautaControllerV1 {
     @ApiResponse(responseCode = "200", description = "Sessões encontradas com sucesso",
             content = @Content(schema = @Schema(implementation = PautaAndSessoesResponse.class))
     )
-    @ApiResponse(responseCode = "404", description = "Nenhuma pauta com sessão cadastrada")
-    @GetMapping
+    @ApiResponse(responseCode = "404", description = "Nenhuma pauta com sessão cadastrada",
+            content = @Content(schema = @Schema())
+    )
+    @GetMapping("/sessoes")
     ResponseEntity<List<PautaAndSessoesResponse>> recuperarSessoes();
 
 }

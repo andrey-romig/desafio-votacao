@@ -1,7 +1,7 @@
 CREATE TABLE associado (
                            id SERIAL PRIMARY KEY,
                            nome VARCHAR(100) NOT NULL,
-                           cpf VARCHAR(11) NOT NULL UNIQUE
+                           cpf VARCHAR(100) NOT NULL UNIQUE
 );
 CREATE TABLE pauta (
                        id SERIAL PRIMARY KEY,
@@ -34,12 +34,12 @@ INSERT INTO associado (nome, cpf) VALUES
                                       ('Alice Brown', '45678901234');
 
 INSERT INTO pauta (titulo, descricao) VALUES
-                                          ('Title 1', 'Description for Pauta 1'),
-                                          ('Title 2', 'Description for Pauta 2'),
-                                          ('Title 3', 'Description for Pauta 3');
+                                          ('Pauta 1', 'Pauta 1 descrição'),
+                                          ('Pauta 2', 'Pauta 2 descrição'),
+                                          ('Pauta 3', 'Pauta 3 descrição');
 
 INSERT INTO pauta_sessao (pauta_id, data_hora_inicio, data_hora_fim, status) VALUES
-                                                                                 (1, NOW(), NOW() + INTERVAL '1 hour', 'ABERTO'),
+                                                                                 (1, NOW(), NOW() + INTERVAL '1 hour', 'VOTACAO_ABERTA'),
                                                                                  (2, NOW() - INTERVAL '2 hours', NOW() - INTERVAL '1 hour', 'FECHADO'),
                                                                                  (3, NOW() - INTERVAL '3 hours', NOW() - INTERVAL '2 hours', 'FECHADO');
 

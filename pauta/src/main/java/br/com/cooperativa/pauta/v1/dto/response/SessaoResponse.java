@@ -1,14 +1,11 @@
 package br.com.cooperativa.pauta.v1.dto.response;
 
-import br.com.cooperativa.pauta.v1.entity.Pauta;
 import br.com.cooperativa.pauta.v1.entity.PautaSessao;
 import br.com.cooperativa.pauta.v1.enums.StatusPauta;
-import br.com.cooperativa.pauta.v1.enums.TipoVoto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,9 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PautaSessaoResponse {
-
-    private PautaResponse pauta;
+public class SessaoResponse {
 
     private Long pautaSessaoId;
 
@@ -29,29 +24,13 @@ public class PautaSessaoResponse {
     private LocalDateTime fim;
 
     private StatusPauta status;
-
-    private Integer qntdVotosSim = 0;
-    private Integer qntdVotosNao = 0;
-
     private List<VotoResponse> votos;
 
-    public PautaSessaoResponse(Pauta pauta, PautaSessao pautaSessao, List<VotoResponse> votos) {
-        this.pauta = new PautaResponse(pauta.getId(), pauta.getTitulo(), pauta.getDescricao());
+    public SessaoResponse(PautaSessao pautaSessao, List<VotoResponse> votos) {
         this.pautaSessaoId = pautaSessao.getId();
         this.inicio = pautaSessao.getDataInicio();
         this.fim = pautaSessao.getDataFim();
         this.status = pautaSessao.getStatus();
         this.votos = votos;
-
-        if (!CollectionUtils.isEmpty(votos)) {
-            this.qntdVotosSim = votos.stream()
-                    .filter(umVoto -> TipoVoto.SIM.equals(umVoto.getTipoVoto()))
-                    .toList().size();
-
-            this.qntdVotosNao = votos.stream()
-                    .filter(umVoto -> TipoVoto.NAO.equals(umVoto.getTipoVoto()))
-                    .toList().size();
-        }
     }
-
 }

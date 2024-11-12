@@ -12,6 +12,6 @@ import java.util.List;
 public class PautaAndSessoesResponse {
 
     private PautaResponse pauta;
-    private List<PautaSessaoResponse> sessoes;
+    private List<SessaoResponse> sessoes;
 
 }

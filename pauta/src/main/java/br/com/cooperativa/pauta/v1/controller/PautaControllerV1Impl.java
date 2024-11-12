@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,6 +47,12 @@ public class PautaControllerV1Impl implements PautaControllerV1 {
     }
 
     @Override
+    public ResponseEntity<PautaSessaoResponse> fecharSessaoVotacao(Long pautaSessaoid) {
+        PautaSessaoResponse pautaSessaoResponse = pautaService.fecharSessaoVotacao(pautaSessaoid);
+        return Objects.nonNull(pautaSessaoResponse) ? ResponseEntity.ok(pautaSessaoResponse) : ResponseEntity.badRequest().build();
+    }
+
+    @Override
     public ResponseEntity<List<PautaResponse>> recuperarTodasPautas() {
         List<Pauta> pautas = pautaService.getRepository().findAll();
 
@@ -56,7 +61,7 @@ public class PautaControllerV1Impl implements PautaControllerV1 {
         }
 
         List<PautaResponse> pautasResponse = pautas.stream()
-                .map(pauta -> new PautaResponse(pauta.getTitulo(), pauta.getDescricao()))
+                .map(pauta -> new PautaResponse(pauta.getId(), pauta.getTitulo(), pauta.getDescricao()))
                 .toList();
 
         return ResponseEntity.ok(pautasResponse);
@@ -70,7 +75,7 @@ public class PautaControllerV1Impl implements PautaControllerV1 {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(new PautaResponse(pauta.getTitulo(), pauta.getDescricao()));
+        return ResponseEntity.ok(new PautaResponse(pauta.getId(), pauta.getTitulo(), pauta.getDescricao()));
     }
 
     @Override

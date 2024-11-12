@@ -3,10 +3,7 @@ package br.com.cooperativa.pauta.v1.service;
 import br.com.cooperativa.pauta.v1.base.BaseService;
 import br.com.cooperativa.pauta.v1.dto.request.PautaRequest;
 import br.com.cooperativa.pauta.v1.dto.request.VotoRequest;
-import br.com.cooperativa.pauta.v1.dto.response.PautaAndSessoesResponse;
-import br.com.cooperativa.pauta.v1.dto.response.PautaResponse;
-import br.com.cooperativa.pauta.v1.dto.response.PautaSessaoResponse;
-import br.com.cooperativa.pauta.v1.dto.response.VotoResponse;
+import br.com.cooperativa.pauta.v1.dto.response.*;
 import br.com.cooperativa.pauta.v1.entity.Associado;
 import br.com.cooperativa.pauta.v1.entity.Pauta;
 import br.com.cooperativa.pauta.v1.entity.PautaSessao;
@@ -91,6 +88,8 @@ public class PautaService extends BaseService<Pauta, PautaRepository> {
         }
 
         if (pautaSessao.getDataFim().isBefore(LocalDateTime.now())) {
+            pautaSessao.setStatus(StatusPauta.VOTACAO_FECHADA);
+            pautaSessaoService.getRepository().save(pautaSessao);
             throw new RegraNegocioException("A sessão de votação já foi encerrada.");
         }
 
@@ -118,16 +117,11 @@ public class PautaService extends BaseService<Pauta, PautaRepository> {
 
         PautaSessao pautaSessao = pautaSessaoOptional.get();
 
-        if (pautaSessao.getStatus() != StatusPauta.VOTACAO_FECHADA) {
+        if (!StatusPauta.VOTACAO_FECHADA.equals(pautaSessao.getStatus())) {
             throw new RegraNegocioException("A sessão de votação ainda está aberta.");
         }
 
-        List<VotoSessao> lVotosSessao = votoSessaoService.getRepository().findAllByPautaSessaoId(pautaSessaoId);
-
-        List<VotoResponse> votoResponses = lVotosSessao.stream()
-                .map(votoSessao -> new VotoResponse(votoSessao, votoSessao.getAssociado()))
-                .toList();
-
+        List<VotoResponse> votoResponses = recuperaVotos(pautaSessaoId);
         return new PautaSessaoResponse(pautaSessao.getPauta(), pautaSessao, votoResponses);
     }
 
@@ -138,7 +132,7 @@ public class PautaService extends BaseService<Pauta, PautaRepository> {
 
         pauta = getRepository().save(pauta);
 
-        return new PautaResponse(pauta.getTitulo(), pauta.getDescricao());
+        return new PautaResponse(pauta.getId(), pauta.getTitulo(), pauta.getDescricao());
     }
 
     public List<PautaAndSessoesResponse> recuperarSessoes() {
@@ -151,10 +145,10 @@ public class PautaService extends BaseService<Pauta, PautaRepository> {
         return pautas.stream()
                 .map(pauta -> {
                     PautaResponse pautaResponse = new PautaResponse(pauta);
-                    List<PautaSessaoResponse> sessoesResponse =
+                    List<SessaoResponse> sessoesResponse =
                             pauta.getSessoes() != null
                                     ? pauta.getSessoes().stream()
-                                        .map(sessao -> new PautaSessaoResponse(pauta, sessao, getVotos(sessao)))
+                                        .map(sessao -> new SessaoResponse(sessao, getVotos(sessao)))
                                         .toList()
                                     : Collections.emptyList();
 
@@ -170,5 +164,31 @@ public class PautaService extends BaseService<Pauta, PautaRepository> {
         return sessao.getVotos().stream()
                 .map(voto -> new VotoResponse(voto, voto.getAssociado()))
                 .toList();
+    }
+
+    public PautaSessaoResponse fecharSessaoVotacao(Long pautaSessaoId) {
+        Optional<PautaSessao> pautaSessaoOptional = pautaSessaoService.getRepository().findById(pautaSessaoId);
+
+        if (pautaSessaoOptional.isEmpty()) {
+            throw new ObjectNotFoundException("Sessão de votação não encontrada com o id: " + pautaSessaoId);
+        }
+
+        PautaSessao pautaSessao = pautaSessaoOptional.get();
+
+        if (!StatusPauta.VOTACAO_FECHADA.equals(pautaSessao.getStatus())) {
+            pautaSessao.setStatus(StatusPauta.VOTACAO_FECHADA);
+            pautaSessaoService.getRepository().save(pautaSessao);
+        }
+
+        List<VotoResponse> votoResponses = recuperaVotos(pautaSessaoId);
+        return new PautaSessaoResponse(pautaSessao.getPauta(), pautaSessao, votoResponses);
+    }
+
+    private List<VotoResponse> recuperaVotos(Long pautaSessaoId) {
+        List<VotoSessao> lVotosSessao = votoSessaoService.getRepository().findAllByPautaSessaoId(pautaSessaoId);
+
+        return lVotosSessao.stream()
+                    .map(votoSessao -> new VotoResponse(votoSessao, votoSessao.getAssociado()))
+                    .toList();
     }
 }
