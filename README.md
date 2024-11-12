@@ -45,11 +45,11 @@ senha do server: admin123
 
 2. Para executar a API é necessário acessar o diretório do projeto e rodar o seguinte commando:
   `````
-   mvnw clean package
+   mvnw clean package -Dmaven.test.skip
    `````
  - Após isso, será criado uma pasta /target, acessar essa pasta e rodar o seguinte comando:
  `````
-  java -jar desafio-votacao-0.0.1-SNAPSHOT.jar
+  java -jar pauta-0.0.1-SNAPSHOT.jar
  `````
 
 
